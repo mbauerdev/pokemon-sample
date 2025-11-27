@@ -1,8 +1,11 @@
+using HotChocolate;
 using HotChocolate.Resolvers;
-using PokemonApp.Host.GraphQL.Types;
-using PokemonApp.Host.Services;
+using HotChocolate.Types;
+using PokemonApp.Core;
+using PokemonApp.Core.Models;
+using PokemonApp.GraphQL.Types;
 
-namespace PokemonApp.Host.GraphQL;
+namespace PokemonApp.GraphQL;
 
 [ExtendObjectType<PokemonPayload>]
 public class PokemonTypeExtension
@@ -24,7 +27,7 @@ public class PokemonTypeExtension
         IResolverContext resolverContext,
         CancellationToken cancellationToken)
     {
-        Models.Pokemon? detail =  await pokeApiService.GetPokemonAsync(id, cancellationToken);
+        Pokemon? detail =  await pokeApiService.GetPokemonAsync(id, cancellationToken);
 
         if (detail is null)
         {

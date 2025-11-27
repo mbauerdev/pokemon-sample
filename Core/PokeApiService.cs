@@ -1,8 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using PokemonApp.Host.Models;
+using Microsoft.Extensions.Logging;
+using PokemonApp.Core.Models;
 
-namespace PokemonApp.Host.Services;
+namespace PokemonApp.Core;
 
 public class PokeApiService(HttpClient httpClient, ILogger<PokeApiService> logger)
 {

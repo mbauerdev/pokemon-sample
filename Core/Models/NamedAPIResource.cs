@@ -1,4 +1,4 @@
-namespace PokemonApp.Host.Models;
+namespace PokemonApp.Core.Models;
 
 /// <summary>
 /// Represents a reference to another resource with a name and URL

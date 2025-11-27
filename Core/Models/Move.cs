@@ -1,4 +1,4 @@
-namespace PokemonApp.Host.Models;
+namespace PokemonApp.Core.Models;
 
 public class Move
 {

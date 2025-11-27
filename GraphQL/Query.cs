@@ -1,10 +1,12 @@
+using HotChocolate;
 using HotChocolate.Resolvers;
+using HotChocolate.Types;
 using HotChocolate.Types.Pagination;
-using PokemonApp.Host.GraphQL.Types;
-using PokemonApp.Host.Models;
-using PokemonApp.Host.Services;
+using PokemonApp.Core;
+using PokemonApp.Core.Models;
+using PokemonApp.GraphQL.Types;
 
-namespace PokemonApp.Host.GraphQL;
+namespace PokemonApp.GraphQL;
 
 public class Query
 {

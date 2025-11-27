@@ -1,9 +1,11 @@
+using HotChocolate;
 using HotChocolate.Resolvers;
-using PokemonApp.Host.GraphQL.Types;
-using PokemonApp.Host.Models;
-using PokemonApp.Host.Services;
+using HotChocolate.Types;
+using PokemonApp.Core;
+using PokemonApp.Core.Models;
+using PokemonApp.GraphQL.Types;
 
-namespace PokemonApp.Host.GraphQL;
+namespace PokemonApp.GraphQL;
 
 [ExtendObjectType(typeof(PokemonDetailPayload))]
 public class PokemonDetailTypeExtension

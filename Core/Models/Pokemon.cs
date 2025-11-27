@@ -1,4 +1,4 @@
-namespace PokemonApp.Host.Models;
+namespace PokemonApp.Core.Models;
 
 public class Pokemon
 {
@@ -89,3 +89,4 @@ public class OfficialArtwork
     public string? FrontDefault { get; set; }
     public string? FrontShiny { get; set; }
 }
+

@@ -1,5 +1,5 @@
-using PokemonApp.Host.GraphQL;
-using PokemonApp.Host.Services;
+using PokemonApp.Core;
+using PokemonApp.GraphQL;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

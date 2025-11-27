@@ -1,4 +1,4 @@
-namespace PokemonApp.Host.GraphQL.Types;
+namespace PokemonApp.GraphQL.Types;
 
 public record PokemonDetailPayload(
     int BaseExperience,
