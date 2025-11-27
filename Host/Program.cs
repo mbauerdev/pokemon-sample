@@ -1,7 +1,7 @@
 using PokemonApp.Host.GraphQL;
 using PokemonApp.Host.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add HttpClient for PokeAPI
 builder.Services.AddHttpClient<PokeApiService>(client =>
@@ -13,11 +13,13 @@ builder.Services.AddHttpClient<PokeApiService>(client =>
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
+    .AddTypeExtension<PokemonTypeExtension>()
+    .AddTypeExtension<PokemonDetailTypeExtension>()
     .AddFiltering()
     .AddSorting()
     .AddProjections();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.MapGraphQL();
 

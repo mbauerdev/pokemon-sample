@@ -4,10 +4,8 @@ using PokemonApp.Host.Models;
 
 namespace PokemonApp.Host.Services;
 
-public class PokeApiService
+public class PokeApiService(HttpClient httpClient, ILogger<PokeApiService> logger)
 {
-    private readonly HttpClient _httpClient;
-    private readonly ILogger<PokeApiService> _logger;
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
@@ -15,45 +13,39 @@ public class PokeApiService
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
 
-    public PokeApiService(HttpClient httpClient, ILogger<PokeApiService> logger)
-    {
-        _httpClient = httpClient;
-        _logger = logger;
-    }
-
-    /// <summary>
-    /// Get a Pokemon by ID or name
-    /// </summary>
-    public async Task<Pokemon?> GetPokemonAsync(string nameOrId, CancellationToken cancellationToken = default)
+    public async Task<Pokemon?> GetPokemonAsync(
+        string nameOrId,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"pokemon/{nameOrId.ToLower()}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"pokemon/{nameOrId.ToLower()}", cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Failed to fetch Pokemon {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
+                logger.LogWarning("Failed to fetch PokemonPayload {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
                 return null;
             }
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
+
             return JsonSerializer.Deserialize<Pokemon>(content, JsonOptions);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Pokemon {NameOrId}", nameOrId);
+            logger.LogError(ex, "Error fetching PokemonPayload {NameOrId}", nameOrId);
             throw;
         }
     }
 
-    /// <summary>
-    /// Get a list of Pokemon with pagination
-    /// </summary>
-    public async Task<NamedAPIResourceList?> GetPokemonListAsync(int limit = 20, int offset = 0, CancellationToken cancellationToken = default)
+    public async Task<NamedAPIResourceList?> GetPokemonListAsync(
+        int limit = 20,
+        int offset = 0,
+        CancellationToken cancellationToken = default)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"pokemon?limit={limit}&offset={offset}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"pokemon?limit={limit}&offset={offset}", cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -61,7 +53,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Pokemon list");
+            logger.LogError(ex, "Error fetching PokemonPayload list");
             throw;
         }
     }
@@ -69,15 +61,15 @@ public class PokeApiService
     /// <summary>
     /// Get an Ability by ID or name
     /// </summary>
-    public async Task<Ability?> GetAbilityAsync(string nameOrId, CancellationToken cancellationToken = default)
+    public async Task<Ability?> GetAbilities(string nameOrId, CancellationToken cancellationToken = default)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"ability/{nameOrId.ToLower()}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"ability/{nameOrId.ToLower()}", cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Failed to fetch Ability {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
+                logger.LogWarning("Failed to fetch Ability {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
                 return null;
             }
 
@@ -86,7 +78,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Ability {NameOrId}", nameOrId);
+            logger.LogError(ex, "Error fetching Ability {NameOrId}", nameOrId);
             throw;
         }
     }
@@ -98,7 +90,7 @@ public class PokeApiService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"ability?limit={limit}&offset={offset}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"ability?limit={limit}&offset={offset}", cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -106,7 +98,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Ability list");
+            logger.LogError(ex, "Error fetching Ability list");
             throw;
         }
     }
@@ -114,15 +106,15 @@ public class PokeApiService
     /// <summary>
     /// Get a Move by ID or name
     /// </summary>
-    public async Task<Move?> GetMoveAsync(string nameOrId, CancellationToken cancellationToken = default)
+    public async Task<Move?> GetMoves(string nameOrId, CancellationToken cancellationToken = default)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"move/{nameOrId.ToLower()}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"move/{nameOrId.ToLower()}", cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Failed to fetch Move {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
+                logger.LogWarning("Failed to fetch Move {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
                 return null;
             }
 
@@ -131,7 +123,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Move {NameOrId}", nameOrId);
+            logger.LogError(ex, "Error fetching Move {NameOrId}", nameOrId);
             throw;
         }
     }
@@ -143,7 +135,7 @@ public class PokeApiService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"move?limit={limit}&offset={offset}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"move?limit={limit}&offset={offset}", cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -151,7 +143,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Move list");
+            logger.LogError(ex, "Error fetching Move list");
             throw;
         }
     }
@@ -163,11 +155,11 @@ public class PokeApiService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"type/{nameOrId.ToLower()}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"type/{nameOrId.ToLower()}", cancellationToken);
 
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Failed to fetch Type {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
+                logger.LogWarning("Failed to fetch Type {NameOrId}. Status: {StatusCode}", nameOrId, response.StatusCode);
                 return null;
             }
 
@@ -176,7 +168,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Type {NameOrId}", nameOrId);
+            logger.LogError(ex, "Error fetching Type {NameOrId}", nameOrId);
             throw;
         }
     }
@@ -188,7 +180,7 @@ public class PokeApiService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"type?limit={limit}&offset={offset}", cancellationToken);
+            HttpResponseMessage response = await httpClient.GetAsync($"type?limit={limit}&offset={offset}", cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -196,7 +188,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching Type list");
+            logger.LogError(ex, "Error fetching Type list");
             throw;
         }
     }
