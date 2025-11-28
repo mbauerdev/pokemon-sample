@@ -1,0 +1,65 @@
+@baseUrl = http://localhost:5089
+
+### List Pokemon Query
+### Caution: detail query, especially moves field is implemented in a terribly inefficient way.
+POST {{baseUrl}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query listQuery {
+  pokemons(skip: 0, take: 5) {
+    items {
+      id
+      name
+      detail {
+        baseExperience
+        height
+        order
+        weight
+        spriteUrl
+        abilities {
+          id
+          isMainSeries
+          name
+          shortEffect
+        }
+        moves {
+          accuracy
+          id
+          name
+          power
+          typeName
+        }
+      }
+    }
+  }
+}
+
+### Get Pokemon Detail Query
+POST {{baseUrl}}/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query detailQuery {
+  pokemon(input: { id: 1 }) {
+    id
+    name
+    baseExperience
+    height
+    order
+    weight
+    abilities {
+      id
+      isMainSeries
+      name
+      shortEffect
+    }
+    moves {
+      accuracy
+      id
+      name
+      power
+      typeName
+    }
+  }
+}
