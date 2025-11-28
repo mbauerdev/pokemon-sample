@@ -13,8 +13,8 @@ builder.Services.AddHttpClient<PokeApiService>(client =>
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<Query>()
-    .AddTypeExtension<PokemonTypeExtension>()
-    .AddTypeExtension<PokemonDetailTypeExtension>()
+    .AddTypeExtension<PokemonCollectionPayloadTypeExtension>()
+    .AddTypeExtension<PokemonDetailPayloadTypeExtension>()
     .AddFiltering()
     .AddSorting()
     .AddProjections();

@@ -1,3 +1,3 @@
-namespace PokemonApp.GraphQL.Types;
+namespace PokemonApp.GraphQL;
 
 public record PokemonInput(int Id);

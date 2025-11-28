@@ -4,14 +4,13 @@ using HotChocolate.Types;
 using HotChocolate.Types.Pagination;
 using PokemonApp.Core;
 using PokemonApp.Core.Models;
-using PokemonApp.GraphQL.Types;
 
 namespace PokemonApp.GraphQL;
 
 public class Query
 {
     [UseOffsetPaging]
-    public async Task<CollectionSegment<PokemonPayload>> GetPokemons(
+    public async Task<CollectionSegment<PokemonCollectionPayload>> GetPokemons(
         [Service] PokeApiService pokeApiService,
         int skip,
         int take,
@@ -26,9 +25,9 @@ public class Query
             result.Next is not null,
             result.Previous is not null);
 
-        var collectionSegment = new CollectionSegment<PokemonPayload>(
+        var collectionSegment = new CollectionSegment<PokemonCollectionPayload>(
             result.Results
-                .Select(r => new PokemonPayload(
+                .Select(r => new PokemonCollectionPayload(
                     int.Parse(new Uri(r.Url).Segments.Last().TrimEnd("/")),
                     r.Name))
                 .ToList(),
@@ -38,14 +37,28 @@ public class Query
         return collectionSegment;
     }
 
-    public Task<PokemonDetailPayload?> GetPokemon(
+    public async Task<PokemonPayload?> GetPokemon(
         [Service] PokeApiService pokeApiService,
         PokemonInput input,
         CancellationToken cancellationToken,
-        IResolverContext resolverContext) =>
-        PokemonTypeExtension.GetDetailInternal(
-            pokeApiService,
-            input.Id.ToString(),
-            resolverContext,
+        IResolverContext resolverContext)
+    {
+        string id = input.Id.ToString();
+
+        Pokemon? result = await pokeApiService.GetPokemonAsync(
+            id,
             cancellationToken);
+
+        if (result is null)
+        {
+            resolverContext.ReportError(ErrorBuilder.New()
+                .SetMessage($"Details not found for Pokémon {id}")
+                .SetCode("DETAILS_NOT_FOUND")
+                .Build());
+
+            return default;
+        }
+
+        return result.ToPokemonPayload();
+    }
 }

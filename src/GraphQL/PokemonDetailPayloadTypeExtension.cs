@@ -3,12 +3,11 @@ using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using PokemonApp.Core;
 using PokemonApp.Core.Models;
-using PokemonApp.GraphQL.Types;
 
 namespace PokemonApp.GraphQL;
 
 [ExtendObjectType(typeof(PokemonDetailPayload))]
-public class PokemonDetailTypeExtension
+public class PokemonDetailPayloadTypeExtension
 {
     [BindMember(nameof(PokemonDetailPayload.Abilities))]
     public async Task<List<AbilityPayload>> GetAbilities(

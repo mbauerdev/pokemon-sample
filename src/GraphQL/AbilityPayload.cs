@@ -1,4 +1,4 @@
-namespace PokemonApp.GraphQL.Types;
+namespace PokemonApp.GraphQL;
 
 public record AbilityPayload(
     int Id,
