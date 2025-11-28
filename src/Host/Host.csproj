@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>PokemonApp.Host</AssemblyName>
     <RootNamespace>PokemonApp.Host</RootNamespace>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
