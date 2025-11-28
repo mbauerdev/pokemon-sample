@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:5000
+@baseUrl = http://localhost:5089
 
 ### List Pokemon Query
 ### Caution: detail query, especially moves field is implemented in a terribly inefficient way.
